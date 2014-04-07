@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1>Check the box if you do not know the word.</h1>
+    <form method="post" action="/record">
+        {% for w in words %}
+            <p>
+                <input type="checkbox" name="{{ w.id }}">
+                {{ w.word }}, {{ w.ndef }}
+            </p>
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
