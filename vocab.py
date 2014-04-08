@@ -4,7 +4,7 @@
 
 import random
 
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
@@ -19,12 +19,14 @@ class Word(db.Model):
     word = db.Column(db.String)
     ndef = db.Column(db.Integer)
     list_name = db.Column(db.String)
+    ntested = db.Column(db.Integer)
     nmistakes = db.Column(db.Integer)
 
-    def __init__(self, word, ndef, list_name, nmistakes=0):
+    def __init__(self, word, ndef, list_name, ntested=0, nmistakes=0):
         self.word = word
         self.ndef = ndef
         self.list_name = list_name
+        self.ntested = ntested
         self.nmistakes = nmistakes
 
 
@@ -83,6 +85,18 @@ def record():
         w.nmistakes = new_nmistakes
     db.session.commit()
     return 'Recorded.'
+
+
+@app.route('/view_mistakes')
+@app.route('/view_mistakes/<list_name>')
+def view_mistakes(list_name=None):
+    if list_name is None:
+        lists = List.query.all()
+        return render_template('select_mistake_list.html', lists=lists)
+    else:
+        words = Word.query.filter_by(list_name=list_name).filter_by(nmistakes=1).all()
+        return render_template('view_mistakes.html', mistakes=words)
+
 
 
 if __name__ == '__main__':

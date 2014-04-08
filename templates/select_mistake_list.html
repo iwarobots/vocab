@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    {% for l in lists %}
+        <p>
+            <a href="view_mistakes/{{ l.list_name }}">{{ l.list_name }}</a>
+        </p>
+    {% endfor %}
+</body>
+</html>
